@@ -123,6 +123,87 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
+
+        .dropdown-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .dropdown-item:hover {
+            background-color: #eff6ff;
+            color: #2563eb;
+        }
+
+        .services-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+            pointer-events: none;
+        }
+
+        .dropdown-wrapper:hover .services-dropdown,
+        .services-dropdown:hover,
+        .services-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0s;
+            pointer-events: auto;
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-wrapper:hover .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-slide-down {
+            animation: slideDown 0.4s ease-out forwards;
+        }
+
+        @keyframes pulse-icon {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes bounce-icon {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .animated-icon {
+            animation: pulse-icon 2s ease-in-out infinite;
+        }
+
+        .animated-icon-bounce {
+            animation: bounce-icon 1.5s ease-in-out infinite;
+        }
     </style>
     <style>
         @view-transition {
@@ -148,10 +229,14 @@
                         <a href="#home" class="nav-link font-medium">Home</a>
 
                         <!-- SERVICES DROPDOWN -->
-                        <div class="relative group">
-                            <span class="nav-link font-medium cursor-pointer">Services ▼</span>
-                            <ul
-                                class="absolute hidden group-hover:block bg-white shadow-xl rounded-lg w-72 mt-3 p-3 border">
+                        <div class="relative dropdown-wrapper">
+                            <span class="nav-link font-medium cursor-pointer flex items-center gap-1">
+                                Services 
+                                <svg class="w-4 h-4 dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </span>
+                            <ul class="absolute services-dropdown bg-white shadow-xl rounded-lg w-72 mt-2 p-3 border left-0 top-full">
                                 <li class="dropdown-item openServiceModal">GST Returns Filing</li>
                                 <li class="dropdown-item openServiceModal">Income Tax & TDS Filings</li>
                                 <li class="dropdown-item openServiceModal">PF, ESI & PT Filings</li>
@@ -207,34 +292,76 @@
                 <a href="#contact" class="block nav-link font-medium">Contact</a>
             </div>
         </nav>
-<!-- Service Modal -->
-<div id="serviceModal" class="fixed inset-0 bg-black/60 hidden justify-center items-center z-50">
- <form action="mailto:lakkilakshman12@gmail.com" method="POST" enctype="text/plain"
-   class="bg-white w-full max-w-lg p-6 rounded-xl shadow-xl">
-
-  <h2 class="text-xl font-bold mb-3">Service Enquiry</h2>
-
-  <label class="font-medium">Full Name</label>
-  <input type="text" name="Name" class="w-full border p-2 rounded mb-3" required>
-
-  <label class="font-medium">Phone Number</label>
-  <input type="tel" name="Phone" class="w-full border p-2 rounded mb-3" required>
-
-  <label class="font-medium">Email ID</label>
-  <input type="email" name="Email" class="w-full border p-2 rounded mb-3" required>
-
-  <label class="font-medium">Service Required</label>
-  <input type="text" id="serviceSelected" name="Service" readonly class="w-full border p-2 rounded bg-gray-200 mb-3">
-
-  <label class="font-medium">Requirement Details</label>
-  <textarea name="Requirement" rows="3" class="w-full border p-2 rounded mb-4"></textarea>
-
-  <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">
-   Submit Details
-  </button>
-
-  <div onclick="closeModal()" class="text-center text-red-600 cursor-pointer mt-3">Cancel</div>
- </form>
+<!-- Free Consultation Modal -->
+<div id="consultationModal" class="fixed inset-0 bg-black/60 hidden items-start justify-center z-50 pt-20 overflow-y-auto">
+    <div class="bg-white w-full max-w-lg mx-4 p-8 rounded-2xl shadow-2xl modal-slide-down">
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800">Free Consultation</h2>
+            <p class="text-gray-500 mt-2">Get expert advice for your tax needs</p>
+        </div>
+        
+        <form id="consultationForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                <input type="text" name="name" required placeholder="Enter your full name" 
+                    class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number *</label>
+                <input type="tel" name="mobile" required placeholder="+91 XXXXX XXXXX" 
+                    class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                <input type="email" name="email" required placeholder="your.email@example.com" 
+                    class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Select Service *</label>
+                <select name="service" id="serviceSelect" required 
+                    class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white">
+                    <option value="">Choose a service...</option>
+                    <option value="GST Returns Filing">GST Returns Filing</option>
+                    <option value="Income Tax & TDS Filings">Income Tax & TDS Filings</option>
+                    <option value="PF, ESI & PT Filings">PF, ESI & PT Filings</option>
+                    <option value="Accounting Services">Accounting Services</option>
+                    <option value="Financial Statements">Financial Statements</option>
+                    <option value="Company Incorporation">Company Incorporation</option>
+                    <option value="Trade & Labour License">Trade & Labour License</option>
+                    <option value="Trademark Registration">Trademark Registration</option>
+                    <option value="DSC Token">DSC Token</option>
+                    <option value="Net Worth Certification">Net Worth Certification</option>
+                    <option value="Visa Certification">Visa Certification</option>
+                    <option value="PAN & Aadhaar Service">PAN & Aadhaar Service</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                <textarea name="message" rows="3" placeholder="Tell us about your requirements..." 
+                    class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"></textarea>
+            </div>
+            
+            <button type="submit" 
+                class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl">
+                Submit Request
+            </button>
+        </form>
+        
+        <button onclick="closeConsultationModal()" 
+            class="w-full mt-3 text-gray-500 hover:text-gray-700 font-medium transition-all">
+            Cancel
+        </button>
+    </div>
 </div>
 
         <!-- Hero Section -->
@@ -258,7 +385,7 @@
                         <div class="grid grid-cols-3 gap-6 mt-12">
                             <div class="stat-card">
                                 <div class="text-3xl font-bold mb-1">
-                                    15+
+                                    <span class="counter" data-target="15">0</span>+
                                 </div>
                                 <div class="text-sm opacity-75">
                                     Years Experience
@@ -266,7 +393,7 @@
                             </div>
                             <div class="stat-card">
                                 <div class="text-3xl font-bold mb-1">
-                                    10K+
+                                    <span class="counter" data-target="10000" data-suffix="K">0</span>+
                                 </div>
                                 <div class="text-sm opacity-75">
                                     Happy Clients
@@ -274,7 +401,7 @@
                             </div>
                             <div class="stat-card">
                                 <div class="text-3xl font-bold mb-1">
-                                    98%
+                                    <span class="counter" data-target="98">0</span>%
                                 </div>
                                 <div class="text-sm opacity-75">
                                     Success Rate
@@ -346,9 +473,11 @@
                 <div class="grid md:grid-cols-3 gap-8">
 
                     <!-- Filing of Returns -->
-                    <div class="service-card feature-card rounded-xl shadow-lg p-8 border-2">
-                        <div class="feature-icon w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-md">
-                            📄
+                    <div class="service-card feature-card rounded-xl shadow-lg p-8 border-2 bg-white">
+                        <div class="feature-icon w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-md bg-blue-100 animated-icon">
+                            <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Filing of Returns</h3>
                         <p class="opacity-80 mb-6">Accurate return filings ensuring compliance and peace of mind.</p>
@@ -360,9 +489,11 @@
                     </div>
 
                     <!-- Accounting & Consultancy -->
-                    <div class="service-card feature-card rounded-xl shadow-lg p-8 border-2">
-                        <div class="feature-icon w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-md">
-                            📊
+                    <div class="service-card feature-card rounded-xl shadow-lg p-8 border-2 bg-white">
+                        <div class="feature-icon w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-md bg-green-100 animated-icon-bounce" style="animation-delay: 0.3s;">
+                            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Accounting & Consultancy</h3>
                         <p class="opacity-80 mb-6">Professional accounting services backed by strong expertise.</p>
@@ -377,9 +508,11 @@
                     </div>
 
                     <!-- Other Services -->
-                    <div class="service-card feature-card rounded-xl shadow-lg p-8 border-2">
-                        <div class="feature-icon w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-md">
-                            🧾
+                    <div class="service-card feature-card rounded-xl shadow-lg p-8 border-2 bg-white">
+                        <div class="feature-icon w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-md bg-purple-100 animated-icon" style="animation-delay: 0.6s;">
+                            <svg class="w-10 h-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Other Services</h3>
                         <p class="opacity-80 mb-6">All tax, business & government registration services under one roof.
@@ -674,7 +807,7 @@
             </svg></a> <!-- Contact Form Modal -->
         <div id="contact-modal"
             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
-            <div class="max-w-2xl w-full mx-4 rounded-2xl shadow-2xl p-8 relative max-h-[90vh] overflow-y-auto"><button
+            <div class="bg-white max-w-2xl w-full mx-4 rounded-2xl shadow-2xl p-8 relative max-h-[90vh] overflow-y-auto"><button
                     id="close-modal"
                     class="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
@@ -1078,6 +1211,122 @@
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenu.classList.toggle('hidden');
         });
+
+        // Consultation Modal functionality
+        const consultationModal = document.getElementById('consultationModal');
+        
+        function openConsultationModal(serviceName = '') {
+            consultationModal.classList.remove('hidden');
+            consultationModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            if (serviceName) {
+                document.getElementById('serviceSelect').value = serviceName;
+            }
+        }
+        
+        function closeConsultationModal() {
+            consultationModal.classList.add('hidden');
+            consultationModal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal on backdrop click
+        consultationModal.addEventListener('click', (e) => {
+            if (e.target === consultationModal) {
+                closeConsultationModal();
+            }
+        });
+        
+        // Service dropdown item click handlers
+        document.querySelectorAll('.openServiceModal').forEach(item => {
+            item.addEventListener('click', () => {
+                const serviceName = item.textContent.trim();
+                openConsultationModal(serviceName);
+            });
+        });
+        
+        // Consultation form submission
+        document.getElementById('consultationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const name = formData.get('name');
+            const mobile = formData.get('mobile');
+            const email = formData.get('email');
+            const service = formData.get('service');
+            const message = formData.get('message');
+            
+            const subject = encodeURIComponent(`Free Consultation Request: ${service}`);
+            const body = encodeURIComponent(
+                `New Consultation Request\n\n` +
+                `Name: ${name}\n` +
+                `Mobile: ${mobile}\n` +
+                `Email: ${email}\n` +
+                `Service: ${service}\n` +
+                `Message: ${message || 'N/A'}\n\n` +
+                `Please respond to this inquiry as soon as possible.`
+            );
+            
+            window.open(`mailto:${config.contact_email || defaultConfig.contact_email}?subject=${subject}&body=${body}`, '_blank');
+            
+            alert('Thank you! Your consultation request has been submitted.');
+            e.target.reset();
+            closeConsultationModal();
+        });
+        
+        // Counter Animation
+        let countersAnimated = false;
+        function animateCounters() {
+            if (countersAnimated) return;
+            countersAnimated = true;
+            
+            const counters = document.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const suffix = counter.getAttribute('data-suffix') || '';
+                const duration = 2000;
+                const startTime = performance.now();
+                
+                const updateCounter = (currentTime) => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const current = Math.floor(progress * target);
+                    
+                    if (suffix === 'K') {
+                        counter.textContent = Math.floor(current / 1000) + 'K';
+                    } else {
+                        counter.textContent = current;
+                    }
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        if (suffix === 'K') {
+                            counter.textContent = (target / 1000) + 'K';
+                        } else {
+                            counter.textContent = target;
+                        }
+                    }
+                };
+                
+                requestAnimationFrame(updateCounter);
+            });
+        }
+        
+        // Trigger counter animation when stats come into view
+        const statsSection = document.querySelector('.stat-card');
+        if (statsSection) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounters();
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            observer.observe(statsSection);
+        }
 
         // Contact modal functionality
         const contactModal = document.getElementById('contact-modal');
