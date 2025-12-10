@@ -204,6 +204,31 @@
         .animated-icon-bounce {
             animation: bounce-icon 1.5s ease-in-out infinite;
         }
+
+        @keyframes whatsapp-pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        .whatsapp-btn {
+            background-color: #25D366 !important;
+            animation: whatsapp-pulse 2s ease-in-out infinite;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.15);
+            animation: none;
+        }
     </style>
     <style>
         @view-transition {
@@ -255,7 +280,7 @@
                         <a href="#about" class="nav-link font-medium">About</a>
                         <a href="#contact" class="nav-link font-medium">Contact</a>
 
-                        <button id="contact-now-btn" onclick="openModal('General Enquiry')"
+                        <button id="contact-now-btn" onclick="openFreeConsultation()"
                             class="px-6 py-2 rounded-lg font-semibold bg-blue-600 text-white shadow-md hover:bg-blue-700 transition-all">
                             Get It Now
                         </button>
@@ -280,11 +305,18 @@
                 <details class="bg-gray-50 p-3 rounded-lg">
                     <summary class="font-medium cursor-pointer">Services</summary>
                     <div class="pl-2 mt-2 space-y-1 text-sm">
-                        <div class="openServiceModal">GST Returns Filing</div>
-                        <div class="openServiceModal">Income Tax & TDS Filings</div>
-                        <div class="openServiceModal">Accounting Services</div>
-                        <div class="openServiceModal">Company Incorporation</div>
-                        <div class="openServiceModal">PAN & Aadhaar Services</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">GST Returns Filing</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">Income Tax & TDS Filings</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">PF, ESI & PT Filings</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">Accounting Services</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">Financial Statements</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">Company Incorporation</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">Trade & Labour License</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">Trademark Registration</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">DSC Token</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">Net Worth Certification</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">Visa Certification</div>
+                        <div class="openServiceModal py-1 cursor-pointer hover:text-blue-600">PAN & Aadhaar Service</div>
                     </div>
                 </details>
 
@@ -293,6 +325,100 @@
             </div>
         </nav>
 <!-- Free Consultation Modal -->
+<div id="freeConsultationModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 overflow-y-auto">
+    <div class="bg-white w-full max-w-4xl mx-4 p-8 rounded-2xl shadow-2xl modal-slide-down relative my-8">
+        <button onclick="closeFreeConsultation()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get in Touch with us now...!!!</h2>
+                <p class="text-gray-600 mb-6">Don't forget your FREE Consultation! Fill your details here & we'll reach you soon!"</p>
+                
+                <form id="freeConsultForm" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <input type="text" name="name" required placeholder="Name" 
+                                class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                        </div>
+                        <div>
+                            <input type="email" name="email" required placeholder="Email" 
+                                class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <input type="tel" name="mobile" required placeholder="Mobile Number" 
+                                class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                        </div>
+                        <div>
+                            <input type="text" name="city" placeholder="City" 
+                                class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <select name="service" id="freeConsultService" required 
+                            class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white">
+                            <option value="">Select Service</option>
+                            <option value="GST Returns Filing">GST Returns Filing</option>
+                            <option value="Income Tax & TDS Filings">Income Tax & TDS Filings</option>
+                            <option value="PF, ESI & PT Filings">PF, ESI & PT Filings</option>
+                            <option value="Accounting Services">Accounting Services</option>
+                            <option value="Financial Statements">Financial Statements</option>
+                            <option value="Company Incorporation">Company Incorporation</option>
+                            <option value="Trade & Labour License">Trade & Labour License</option>
+                            <option value="Trademark Registration">Trademark Registration</option>
+                            <option value="DSC Token">DSC Token</option>
+                            <option value="Net Worth Certification">Net Worth Certification</option>
+                            <option value="Visa Certification">Visa Certification</option>
+                            <option value="PAN & Aadhaar Service">PAN & Aadhaar Service</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" 
+                        class="w-full bg-gray-900 text-white py-4 rounded-lg font-semibold hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl text-lg">
+                        Submit
+                    </button>
+                </form>
+                <div id="freeConsultMessage" class="mt-4 p-4 rounded-lg hidden font-medium text-center"></div>
+            </div>
+            
+            <div class="hidden md:flex items-center justify-center">
+                <svg viewBox="0 0 200 200" class="w-64 h-64" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="40" y="20" width="120" height="160" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+                    <rect x="55" y="35" width="90" height="25" rx="4" fill="#fbbf24"/>
+                    <text x="100" y="52" text-anchor="middle" fill="#1f2937" font-size="16" font-weight="bold">₹</text>
+                    <line x1="130" y1="42" x2="135" y2="42" stroke="#1f2937" stroke-width="2"/>
+                    <line x1="130" y1="48" x2="135" y2="48" stroke="#1f2937" stroke-width="2"/>
+                    <rect x="55" y="70" width="8" height="8" rx="1" fill="#d1d5db"/>
+                    <line x1="70" y1="74" x2="125" y2="74" stroke="#d1d5db" stroke-width="2"/>
+                    <rect x="55" y="90" width="8" height="8" rx="1" fill="#d1d5db"/>
+                    <line x1="70" y1="94" x2="125" y2="94" stroke="#d1d5db" stroke-width="2"/>
+                    <rect x="55" y="110" width="8" height="8" rx="1" fill="#d1d5db"/>
+                    <line x1="70" y1="114" x2="125" y2="114" stroke="#d1d5db" stroke-width="2"/>
+                    <rect x="55" y="130" width="8" height="8" rx="1" fill="#d1d5db"/>
+                    <line x1="70" y1="134" x2="125" y2="134" stroke="#d1d5db" stroke-width="2"/>
+                    <line x1="140" y1="165" x2="175" y2="200" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
+                    <polygon points="165,140 185,160 155,175" fill="#0f766e"/>
+                    <circle cx="30" cy="25" r="6" fill="#1f2937"/>
+                    <line x1="30" y1="17" x2="30" y2="12" stroke="#1f2937" stroke-width="2"/>
+                    <line x1="37" y1="25" x2="42" y2="25" stroke="#1f2937" stroke-width="2"/>
+                    <circle cx="170" cy="35" r="6" fill="#1f2937"/>
+                    <line x1="170" y1="27" x2="170" y2="22" stroke="#1f2937" stroke-width="2"/>
+                    <line x1="178" y1="35" x2="183" y2="35" stroke="#1f2937" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Service Consultation Modal -->
 <div id="consultationModal" class="fixed inset-0 bg-black/60 hidden items-start justify-center z-50 pt-20 overflow-y-auto">
     <div class="bg-white w-full max-w-lg mx-4 p-8 rounded-2xl shadow-2xl modal-slide-down">
         <div class="text-center mb-6">
@@ -376,8 +502,8 @@
                         </div>
                         <h1 id="hero-title" class="text-5xl md:text-6xl font-bold mb-6 leading-tight"></h1>
                         <p id="hero-subtitle" class="text-xl md:text-2xl mb-8 opacity-90"></p>
-                        <div class="flex gap-4"><button id="cta-button"
-                                class="px-8 py-4 rounded-lg text-lg font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-105"></button>
+                        <div class="flex gap-4"><button id="cta-button" onclick="openFreeConsultation()"
+                                class="px-8 py-4 rounded-lg text-lg font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-105 bg-blue-600 text-white">Avail Free Consultant</button>
                             <button id="learn-more-button"
                                 class="px-8 py-4 rounded-lg text-lg font-semibold border-2 transition-all hover:scale-105">Learn
                                 More</button>
@@ -794,13 +920,63 @@
                 </div>
             </div>
         </section><!-- Footer -->
-        <footer class="py-8">
+        <footer class="py-12 bg-gray-900 text-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <p id="footer-text" class="text-center opacity-80"></p>
+                <div class="grid md:grid-cols-4 gap-8 mb-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-blue-400">JESVICA Tax Services</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Your trusted partner for all tax and accounting needs. Professional, reliable, and expert-driven services.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-4 text-white">Quick Links</h4>
+                        <ul class="space-y-2 text-gray-400 text-sm">
+                            <li><a href="#home" class="hover:text-blue-400 transition-colors">Home</a></li>
+                            <li><a href="#services" class="hover:text-blue-400 transition-colors">Services</a></li>
+                            <li><a href="#about" class="hover:text-blue-400 transition-colors">About Us</a></li>
+                            <li><a href="#contact" class="hover:text-blue-400 transition-colors">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-4 text-white">Our Services</h4>
+                        <ul class="space-y-2 text-gray-400 text-sm">
+                            <li class="hover:text-blue-400 transition-colors cursor-pointer openServiceModal">GST Returns Filing</li>
+                            <li class="hover:text-blue-400 transition-colors cursor-pointer openServiceModal">Income Tax Filing</li>
+                            <li class="hover:text-blue-400 transition-colors cursor-pointer openServiceModal">Company Incorporation</li>
+                            <li class="hover:text-blue-400 transition-colors cursor-pointer openServiceModal">Accounting Services</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-4 text-white">Contact Info</h4>
+                        <ul class="space-y-3 text-gray-400 text-sm">
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                </svg>
+                                <span id="footer-phone">+91 7780532977</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                <span id="footer-email">lakkilakshman12@gmail.com</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-4 h-4 text-blue-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <span>Nagarabli, Karnataka, India</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-800 pt-8">
+                    <p id="footer-text" class="text-center text-gray-400 text-sm"></p>
+                </div>
             </div>
         </footer><!-- WhatsApp Floating Button --> <a href="https://wa.me/917780532977" target="_blank"
             rel="noopener noreferrer" id="whatsapp-button"
-            class="fixed bottom-6 right-6 w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 z-50 animate-pulse">
+            class="fixed bottom-6 right-6 w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all z-50 whatsapp-btn">
             <svg class="w-8 h-8" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -867,6 +1043,47 @@
         </div>
     </div>
     <script>
+        // Global functions for modals - defined at top level for onclick handlers
+        function openFreeConsultation() {
+            const modal = document.getElementById('freeConsultationModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function closeFreeConsultation() {
+            const modal = document.getElementById('freeConsultationModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function openConsultationModal(serviceName = '') {
+            const modal = document.getElementById('consultationModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+                if (serviceName) {
+                    const select = document.getElementById('serviceSelect');
+                    if (select) select.value = serviceName;
+                }
+            }
+        }
+        
+        function closeConsultationModal() {
+            const modal = document.getElementById('consultationModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
         const defaultConfig = {
             background_color: "#f8f9fa",
             surface_color: "#ffffff",
@@ -876,7 +1093,7 @@
             company_name: "JESVICATAXS",
             hero_title: "Responsible for your compliance",
             hero_subtitle: "Professional Tax & Accounting Services in Nagarabli",
-            cta_button_text: "Get It Now",
+            cta_button_text: "Avail Free Consultant",
             services_heading: "Our Services",
             service_1_title: "Filing of Returns",
             service_2_title: "Accounting & Consultancy",
@@ -894,6 +1111,7 @@
         let config = { ...defaultConfig };
 
         async function onConfigChange(newConfig) {
+            try {
             config = { ...config, ...newConfig };
 
             const baseFont = config.font_family || defaultConfig.font_family;
@@ -987,10 +1205,12 @@
             servicesBadge.style.color = primaryColor;
 
             const servicesHeading = document.getElementById('services-heading');
-            servicesHeading.textContent = config.services_heading || defaultConfig.services_heading;
-            servicesHeading.style.color = textColor;
-            servicesHeading.style.fontFamily = baseFontStack;
-            servicesHeading.style.fontSize = `${baseSize * 2.5}px`;
+            if (servicesHeading) {
+                servicesHeading.textContent = config.services_heading || defaultConfig.services_heading;
+                servicesHeading.style.color = textColor;
+                servicesHeading.style.fontFamily = baseFontStack;
+                servicesHeading.style.fontSize = `${baseSize * 2.5}px`;
+            }
 
             const serviceCards = document.querySelectorAll('.service-card');
             serviceCards.forEach((card, index) => {
@@ -1013,22 +1233,28 @@
             });
 
             const service1Title = document.getElementById('service-1-title');
-            service1Title.textContent = config.service_1_title || defaultConfig.service_1_title;
-            service1Title.style.color = textColor;
-            service1Title.style.fontFamily = baseFontStack;
-            service1Title.style.fontSize = `${baseSize * 1.5}px`;
+            if (service1Title) {
+                service1Title.textContent = config.service_1_title || defaultConfig.service_1_title;
+                service1Title.style.color = textColor;
+                service1Title.style.fontFamily = baseFontStack;
+                service1Title.style.fontSize = `${baseSize * 1.5}px`;
+            }
 
             const service2Title = document.getElementById('service-2-title');
-            service2Title.textContent = config.service_2_title || defaultConfig.service_2_title;
-            service2Title.style.color = textColor;
-            service2Title.style.fontFamily = baseFontStack;
-            service2Title.style.fontSize = `${baseSize * 1.5}px`;
+            if (service2Title) {
+                service2Title.textContent = config.service_2_title || defaultConfig.service_2_title;
+                service2Title.style.color = textColor;
+                service2Title.style.fontFamily = baseFontStack;
+                service2Title.style.fontSize = `${baseSize * 1.5}px`;
+            }
 
             const service3Title = document.getElementById('service-3-title');
-            service3Title.textContent = config.service_3_title || defaultConfig.service_3_title;
-            service3Title.style.color = textColor;
-            service3Title.style.fontFamily = baseFontStack;
-            service3Title.style.fontSize = `${baseSize * 1.5}px`;
+            if (service3Title) {
+                service3Title.textContent = config.service_3_title || defaultConfig.service_3_title;
+                service3Title.style.color = textColor;
+                service3Title.style.fontFamily = baseFontStack;
+                service3Title.style.fontSize = `${baseSize * 1.5}px`;
+            }
 
             const serviceDescriptions = document.querySelectorAll('.service-card > p');
             serviceDescriptions.forEach(desc => {
@@ -1136,52 +1362,65 @@
             });
 
             const submitButton = document.querySelector('#contact-form button[type="submit"]');
-            submitButton.style.backgroundColor = primaryColor;
-            submitButton.style.color = '#ffffff';
-            submitButton.style.fontFamily = baseFontStack;
-            submitButton.style.fontSize = `${baseSize}px`;
+            if (submitButton) {
+                submitButton.style.backgroundColor = primaryColor;
+                submitButton.style.color = '#ffffff';
+                submitButton.style.fontFamily = baseFontStack;
+                submitButton.style.fontSize = `${baseSize}px`;
+            }
 
             const contactEmail = document.getElementById('contact-email');
-            contactEmail.textContent = config.contact_email || defaultConfig.contact_email;
-            contactEmail.style.fontFamily = baseFontStack;
-            contactEmail.style.fontSize = `${baseSize}px`;
+            if (contactEmail) {
+                contactEmail.textContent = config.contact_email || defaultConfig.contact_email;
+                contactEmail.style.fontFamily = baseFontStack;
+                contactEmail.style.fontSize = `${baseSize}px`;
+            }
 
             const contactPhone = document.getElementById('contact-phone');
-            contactPhone.textContent = config.contact_phone || defaultConfig.contact_phone;
-            contactPhone.style.fontFamily = baseFontStack;
-            contactPhone.style.fontSize = `${baseSize}px`;
+            if (contactPhone) {
+                contactPhone.textContent = config.contact_phone || defaultConfig.contact_phone;
+                contactPhone.style.fontFamily = baseFontStack;
+                contactPhone.style.fontSize = `${baseSize}px`;
+            }
 
-            // Footer
+            // Footer (keep dark styling, just update text)
             const footer = document.querySelector('footer');
-            footer.style.backgroundColor = surfaceColor;
-
             const footerText = document.getElementById('footer-text');
-            footerText.textContent = config.footer_text || defaultConfig.footer_text;
-            footerText.style.color = textColor;
-            footerText.style.fontFamily = baseFontStack;
-            footerText.style.fontSize = `${baseSize * 0.875}px`;
+            if (footerText) {
+                footerText.textContent = config.footer_text || defaultConfig.footer_text;
+            }
 
             // WhatsApp button
             const whatsappButton = document.getElementById('whatsapp-button');
-            whatsappButton.style.backgroundColor = '#25D366';
+            if (whatsappButton) {
+                whatsappButton.style.backgroundColor = '#25D366';
+            }
 
             // Contact Now button in navbar
             const contactNowBtn = document.getElementById('contact-now-btn');
-            contactNowBtn.style.backgroundColor = primaryColor;
-            contactNowBtn.style.color = '#ffffff';
+            if (contactNowBtn) {
+                contactNowBtn.style.backgroundColor = primaryColor;
+                contactNowBtn.style.color = '#ffffff';
+            }
 
             // Modal styling
             const modalContent = document.querySelector('#contact-modal > div');
-            modalContent.style.backgroundColor = surfaceColor;
-            modalContent.style.color = textColor;
+            if (modalContent) {
+                modalContent.style.backgroundColor = surfaceColor;
+                modalContent.style.color = textColor;
+            }
 
             const modalIcon = document.querySelector('#contact-modal .inline-block');
-            modalIcon.style.backgroundColor = primaryColor + '20';
-            modalIcon.style.color = primaryColor;
+            if (modalIcon) {
+                modalIcon.style.backgroundColor = primaryColor + '20';
+                modalIcon.style.color = primaryColor;
+            }
 
             const closeBtn = document.getElementById('close-modal');
-            closeBtn.style.backgroundColor = textColor + '10';
-            closeBtn.style.color = textColor;
+            if (closeBtn) {
+                closeBtn.style.backgroundColor = textColor + '10';
+                closeBtn.style.color = textColor;
+            }
 
             const modalLabels = document.querySelectorAll('#quick-contact-form label');
             modalLabels.forEach(label => {
@@ -1200,10 +1439,15 @@
             });
 
             const modalSubmitBtn = document.querySelector('#quick-contact-form button[type="submit"]');
-            modalSubmitBtn.style.backgroundColor = primaryColor;
-            modalSubmitBtn.style.color = '#ffffff';
-            modalSubmitBtn.style.fontFamily = baseFontStack;
-            modalSubmitBtn.style.fontSize = `${baseSize}px`;
+            if (modalSubmitBtn) {
+                modalSubmitBtn.style.backgroundColor = primaryColor;
+                modalSubmitBtn.style.color = '#ffffff';
+                modalSubmitBtn.style.fontFamily = baseFontStack;
+                modalSubmitBtn.style.fontSize = `${baseSize}px`;
+            }
+            } catch (e) {
+                console.warn('Config change error (non-critical):', e.message);
+            }
         }
 
         // Mobile menu toggle
@@ -1212,30 +1456,68 @@
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Consultation Modal functionality
+        // Target email for all form submissions
+        const targetEmail = 'lakkilakshman12@gmail.com';
+        
+        // Free Consultation Modal event listeners
+        const freeConsultationModal = document.getElementById('freeConsultationModal');
+        if (freeConsultationModal) {
+            freeConsultationModal.addEventListener('click', (e) => {
+                if (e.target === freeConsultationModal) {
+                    closeFreeConsultation();
+                }
+            });
+        }
+        
+        // Free Consultation Form submission
+        const freeConsultForm = document.getElementById('freeConsultForm');
+        if (freeConsultForm) {
+            freeConsultForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const name = formData.get('name');
+                const email = formData.get('email');
+                const mobile = formData.get('mobile');
+                const city = formData.get('city');
+                const service = formData.get('service');
+                
+                const subject = encodeURIComponent(`Free Consultation Request: ${service}`);
+                const body = encodeURIComponent(
+                    `New Free Consultation Request\n\n` +
+                    `Name: ${name}\n` +
+                    `Email: ${email}\n` +
+                    `Mobile: ${mobile}\n` +
+                    `City: ${city || 'Not provided'}\n` +
+                    `Service Required: ${service}\n\n` +
+                    `Please contact me at your earliest convenience.`
+                );
+                
+                window.open(`mailto:${targetEmail}?subject=${subject}&body=${body}`, '_blank');
+                
+                const messageDiv = document.getElementById('freeConsultMessage');
+                if (messageDiv) {
+                    messageDiv.innerHTML = '<span class="text-green-600">Thank you! Your consultation request has been submitted. We will reach you soon!</span>';
+                    messageDiv.classList.remove('hidden');
+                    messageDiv.classList.add('bg-green-100', 'border', 'border-green-400');
+                }
+                e.target.reset();
+                
+                setTimeout(() => {
+                    closeFreeConsultation();
+                    if (messageDiv) messageDiv.classList.add('hidden');
+                }, 3000);
+            });
+        }
+        
+        // Consultation Modal event listeners
         const consultationModal = document.getElementById('consultationModal');
-        
-        function openConsultationModal(serviceName = '') {
-            consultationModal.classList.remove('hidden');
-            consultationModal.classList.add('flex');
-            document.body.style.overflow = 'hidden';
-            if (serviceName) {
-                document.getElementById('serviceSelect').value = serviceName;
-            }
+        if (consultationModal) {
+            consultationModal.addEventListener('click', (e) => {
+                if (e.target === consultationModal) {
+                    closeConsultationModal();
+                }
+            });
         }
-        
-        function closeConsultationModal() {
-            consultationModal.classList.add('hidden');
-            consultationModal.classList.remove('flex');
-            document.body.style.overflow = 'auto';
-        }
-        
-        // Close modal on backdrop click
-        consultationModal.addEventListener('click', (e) => {
-            if (e.target === consultationModal) {
-                closeConsultationModal();
-            }
-        });
         
         // Service dropdown item click handlers
         document.querySelectorAll('.openServiceModal').forEach(item => {
@@ -1245,33 +1527,36 @@
             });
         });
         
-        // Consultation form submission
-        document.getElementById('consultationForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const name = formData.get('name');
-            const mobile = formData.get('mobile');
-            const email = formData.get('email');
-            const service = formData.get('service');
-            const message = formData.get('message');
-            
-            const subject = encodeURIComponent(`Free Consultation Request: ${service}`);
-            const body = encodeURIComponent(
-                `New Consultation Request\n\n` +
-                `Name: ${name}\n` +
-                `Mobile: ${mobile}\n` +
-                `Email: ${email}\n` +
-                `Service: ${service}\n` +
-                `Message: ${message || 'N/A'}\n\n` +
-                `Please respond to this inquiry as soon as possible.`
-            );
-            
-            window.open(`mailto:${config.contact_email || defaultConfig.contact_email}?subject=${subject}&body=${body}`, '_blank');
-            
-            alert('Thank you! Your consultation request has been submitted.');
-            e.target.reset();
-            closeConsultationModal();
-        });
+        // Consultation form submission (Service dropdown modal)
+        const consultationForm = document.getElementById('consultationForm');
+        if (consultationForm) {
+            consultationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const name = formData.get('name');
+                const mobile = formData.get('mobile');
+                const email = formData.get('email');
+                const service = formData.get('service');
+                const message = formData.get('message');
+                
+                const subject = encodeURIComponent(`Service Consultation Request: ${service}`);
+                const body = encodeURIComponent(
+                    `New Service Consultation Request\n\n` +
+                    `Name: ${name}\n` +
+                    `Mobile: ${mobile}\n` +
+                    `Email: ${email}\n` +
+                    `Service: ${service}\n` +
+                    `Message: ${message || 'N/A'}\n\n` +
+                    `Please respond to this inquiry as soon as possible.`
+                );
+                
+                window.open(`mailto:${targetEmail}?subject=${subject}&body=${body}`, '_blank');
+                
+                alert('Thank you! Your consultation request has been submitted.');
+                e.target.reset();
+                closeConsultationModal();
+            });
+        }
         
         // Counter Animation
         let countersAnimated = false;
